@@ -126,7 +126,7 @@ WebApp ClassLoader的父加载器是Common ClassLoader，所以不同的应用�
 
 ClassLoaderWrapper的主要功能可以分为三类，分别是getResourceAsURL()方法、classForName()方法、getResourceAsStream()方法
 
-Resources是一个提供了多个静态方法的工具类，其中封装了一个ClassLoaderWrapper类型的静态字段，Resources 提供的这些静态工具都是通过调用该ClassLoaderWrapper对象的相应方法实现的。
+[Resources](src/main/java/com/huangmaojie/read/mybatis/resource/wrapper/Resources.java)是一个提供了多个静态方法的工具类，其中封装了一个ClassLoaderWrapper类型的静态字段，Resources 提供的这些静态工具都是通过调用该ClassLoaderWrapper对象的相应方法实现的。
 
 ### 2.5.3 ResolverUtil
 [ResolverUtil](src/main/java/com/huangmaojie/read/mybatis/resource/resolverutil/ResolverUtil.java)可以根据指定的条件查找指定包下的类，其中使用的条件由Test接口表示。ResolverUtil中使用classLoader字段(ClassLoader类型)记录了当前使用的类加载器，默认情况下，使用的是当前线程上下文绑定的ClassLoader，我们可以通过setClassLoader()方法修改使用类加载器。
