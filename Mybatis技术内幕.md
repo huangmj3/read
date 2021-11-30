@@ -234,4 +234,8 @@ Transaction接口有[JdbcTransaction](src/main/java/com/huangmaojie/read/mybatis
 
 ![img.png](src/main/resources/mybatis/img/2-37.png)
 
+JdbcTransaction依赖于JDBC Connection控制事务的提交和回滚。
+
+ManagedTransaction的实现更加简单，它同样依赖其中的dataSource宇段获取连接，但其commit()、rollback()方法都是空实现，事务的提交和回滚都是依靠容器管理的。
+
 在实践中， MyBatis通常会与Spring集成使用，数据库的事务是交给Spring进行管理的，在第4章会介绍Transaction接口的另一个实现一[SpringManagedTransaction](src/main/java/com/huangmaojie/read/mybatis/transaction/spring/SpringManagedTransaction.java)
