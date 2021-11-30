@@ -85,7 +85,8 @@ ConnectionLogger.newInstance()方法为会为其封装的Connection对象创建�
 PreparedStatementLogger.invoke()方法会为EXECUTE_METHODS集合中的方法、SET_METHODS集合中的方法、getResultSet()等方法提供代理，
 
 [ResultSetLogger](src/main/java/com/huangmaojie/read/mybatis/logger/adaptor/jdbc/ResultSetLogger.java)中封装了ResultSet对象，也继承了BaseJdbcLogger抽象类并实现了InvocationHandler接口
-ResultSetLogger.invoke()方法的实现会针对ResultSet.next()方法的调用进行一系列后置操作，通过这些后置操作会将 ResultSet数据集中的记录全部输出到 日志中
+
+ResultSetLogger.invoke()方法的实现会针对ResultSet.next()方法的调用进行一系列后置操作，通过这些后置操作会将ResultSet数据集中的记录全部输出到日志中
 
 ## 2.5 资源加载
 ### 2.5.1 类加载器简介
