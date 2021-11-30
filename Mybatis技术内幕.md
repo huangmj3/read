@@ -81,7 +81,7 @@ JDK动态代理不仅在MyBatis的多个模块中都有所涉及，在很多开�
 [ConnectionLogger](src/main/java/com/huangmaojie/read/mybatis/logger/adaptor/jdbc/ConnectionLogger.java)继承了BaseJdbcLogger抽象类，其中封装了Connection对象井同时实现了InvocationHandler接口。
 ConnectionLogger.newInstance()方法为会为其封装的Connection对象创建相应的代理对象
 
-[PreparedStatementLogger](src/main/java/com/huangmaojie/read/mybatis/logger/adaptor/jdbc/PreparedStatementLogger.java)中封装了PreparedStatement对象，也继承了BaseJdbcLogger抽象类井实现了InvocationHandler接 口 。
+[PreparedStatementLogger](src/main/java/com/huangmaojie/read/mybatis/logger/adaptor/jdbc/PreparedStatementLogger.java)中封装了PreparedStatement对象，也继承了BaseJdbcLogger抽象类井实现了InvocationHandler接口 。
 PreparedStatementLogger.invoke()方法会为EXECUTE_METHODS集合中的方法、SET_METHODS集合中的方法、getResultSet()等方法提供代理，
 
 [ResultSetLogger](src/main/java/com/huangmaojie/read/mybatis/logger/adaptor/jdbc/ResultSetLogger.java)中封装了ResultSet对象，也继承了BaseJdbcLogger抽象类并实现了InvocationHandler接口

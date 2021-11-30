@@ -44,7 +44,7 @@ public final class ConnectionLogger extends BaseJdbcLogger implements Invocation
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
-        // 为 prepareStatement()、prepareCall()、createStatement()等方法提供了代理
+        // 为prepareStatement()、prepareCall()、createStatement()等方法提供了代理
         try {
             // 如果调用的是从Object继承的方法，则直接调用，不做任何其他处理
             if (Object.class.equals(method.getDeclaringClass())) {
