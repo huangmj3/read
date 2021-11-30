@@ -742,6 +742,7 @@ public class Proxy implements java.io.Serializable {
                     }
                 });
             }
+            // 创建代理类
             return cons.newInstance(new Object[]{h});
         } catch (IllegalAccessException|InstantiationException e) {
             throw new InternalError(e.toString(), e);

@@ -56,6 +56,7 @@ import org.apache.ibatis.logging.LogFactory;
  * </pre>
  *
  * @author Tim Fennell
+ * @see org.apache.ibatis.io.ResolverUtil
  */
 public class ResolverUtil<T> {
     /*
@@ -69,8 +70,7 @@ public class ResolverUtil<T> {
      */
     public interface Test {
         /**
-         * Will be called repeatedly with candidate classes. Must return True if a class
-         * is to be included in the results, false otherwise.
+         * 参数type是待检测的类 ，如果该类符合检测的条件，则matches()方法返回true，否则返回false
          */
         boolean matches(Class<?> type);
     }
@@ -84,6 +84,7 @@ public class ResolverUtil<T> {
 
         /** Constructs an IsA test using the supplied Class as the parent class/interface. */
         public IsA(Class<?> parentType) {
+            // 构造方法中初始化parent
             this.parent = parentType;
         }
 
@@ -100,13 +101,12 @@ public class ResolverUtil<T> {
     }
 
     /**
-     * A Test that checks to see if each class is annotated with a specific annotation. If it
-     * is, then the test returns true, otherwise false.
+     * 检测指定类是否添加了annotation注解
      */
     public static class AnnotatedWith implements Test {
         private Class<? extends Annotation> annotation;
 
-        /** Constructs an AnnotatedWith test for the specified annotation type. */
+        // 构造方法初始化annotation字段
         public AnnotatedWith(Class<? extends Annotation> annotation) {
             this.annotation = annotation;
         }
@@ -215,12 +215,15 @@ public class ResolverUtil<T> {
      *        classes, e.g. {@code net.sourceforge.stripes}
      */
     public ResolverUtil<T> find(Test test, String packageName) {
+        // 根据包名获取其对应的路径
         String path = getPackagePath(packageName);
 
         try {
+            // 通过 VFS.list()查找packageName包下的所有资源
             List<String> children = VFS.getInstance().list(path);
             for (String child : children) {
                 if (child.endsWith(".class")) {
+                    // 检测该类是否符合test条件
                     addIfMatching(test, child);
                 }
             }
@@ -251,14 +254,17 @@ public class ResolverUtil<T> {
     @SuppressWarnings("unchecked")
     protected void addIfMatching(Test test, String fqn) {
         try {
+            // fqn是类的完全限定名，即包括其所在包的包名
             String externalName = fqn.substring(0, fqn.indexOf('.')).replace('/', '.');
             ClassLoader loader = getClassLoader();
             if (log.isDebugEnabled()) {
                 log.debug("Checking to see if class " + externalName + " matches criteria [" + test + "]");
             }
-
+            // 加载指定的类
             Class<?> type = loader.loadClass(externalName);
+            // 通过Test.matches()方法检测条件是否满足
             if (test.matches(type)) {
+                // 将符合条件的类记录到matches集合中
                 matches.add((Class<T>) type);
             }
         } catch (Throwable t) {

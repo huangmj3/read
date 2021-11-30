@@ -1,14 +1,14 @@
 package com.huangmaojie.read.mybatis.logger.agency;
 
-import com.huangmaojie.read.mybatis.logger.agency.Subject;
-
 /**
  * @author huangmaojie
  * @date 2021/11/30
  */
-public class RealSubject extends Subject {
+public class RealSubject implements Subject {
+
     @Override
     public void operation() {
-
+        System.out.println("this is realSubject operation");
     }
 }
+
