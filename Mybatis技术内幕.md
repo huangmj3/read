@@ -219,7 +219,7 @@ popConnection()方法是PooledDataSource的核心逻辑之一，其具体逻辑�
 
 ![img.png](src/main/resources/mybatis/img/2-35.png)
 
-通过前面对 PooledConnection.invoke()方法的分析我们知道，当调用连接的代理对象的close()方法时，并未关闭真正的数据连接，而是调用 PooledDataSource.pushConnection()方法将PooledConnection对象归还给连接池，供之后重用。 
+当调用连接的代理对象的close()方法时，并未关闭真正的数据连接，而是调用PooledDataSource.pushConnection()方法将PooledConnection对象归还给连接池，供之后重用。 
 PooledDataSource.pushConnection()方法也是PooledDataSource的核心逻辑之一，其逻辑如图2-36所示。
 
 ![img.png](src/main/resources/mybatis/img/2-36.png)
