@@ -25,7 +25,7 @@ import java.net.URL;
  * @see org.apache.ibatis.io.ClassLoaderWrapper
  */
 public class ClassLoaderWrapper {
-    // 应用指定的默认类加载起
+    // 应用指定的默认类加载器
     ClassLoader defaultClassLoader;
     // 系统类加载器
     ClassLoader systemClassLoader;

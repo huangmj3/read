@@ -115,7 +115,7 @@ System ClassLoader是ExtensionClassLoader的子加载器。
 Tomcat本身是一个应用系统，所以Common ClassLoader的父加载器是SystemClassLoader 
 * Tomcat还提供了CatalinaLoader和SharedLoader两个类加载器，它们的父加载器是Common ClassLoader。但是默认情况下，CatalinaLoader和SharedLoader两个类加载器的相应配置(CATALINA_HOME/conf/catalina.properties配置文件中serverl.loader和shared.loader配置项)
 是空的，也就是说，这两个类加载器默认情况下与CommonClassLoader为同一个加载器。
-* tomcat会为每个部署的应用创建一个唯一的类加载器，也就是WebApp ClassLoader，它负责加载该应用的WEB-INF/lib目录下的Jar文件以及WEB-INF/classes目录下的Class文件。由于每个应用都有自己的WebApp ClassLoader，这样就可以使不同的Web应用之间互相隔离，彼此之间看不到对方使用的类文件 。当对应用进行热部署时，会抛弃原有的WebApp ClassLoader, 并为应 用创建新的WebApp ClassLoader。 
+* tomcat会为每个部署的应用创建一个唯一的类加载器，也就是WebApp ClassLoader，它负责加载该应用的WEB-INF/lib目录下的Jar文件以及WEB-INF/classes目录下的Class文件。由于每个应用都有自己的WebApp ClassLoader，这样就可以使不同的Web应用之间互相隔离，彼此之间看不到对方使用的类文件 。当对应用进行热部署时，会抛弃原有的WebApp ClassLoader, 并为应用创建新的WebApp ClassLoader。 
 WebApp ClassLoader的父加载器是Common ClassLoader，所以不同的应用可以使用Common ClassLoader加载的共享类库。最终我们得到Tomcat中的类加载器的结构如图2-28 所示 。
 
 ![img.png](src/main/resources/mybatis/img/2-28.png)
