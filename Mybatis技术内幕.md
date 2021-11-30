@@ -191,7 +191,7 @@ Mybatis使用不同的DataSourceFactory接口实现创建不同类型的 DataSou
 
 ### 2.6.3 UnpooledDataSource
 [javax.sql.DataSource](src/main/java/com/huangmaojie/read/mybatis/datasource/DataSource.java)接口在数据源模块中扮演了产品接口的角色，MyBatis提供了两个DataSource接口的实现类，分别是UnpooledDataSource和PooledDataSource，它们扮演着具体产品类的角色。
-[UnpooledDataSource](src/main/java/com/huangmaojie/read/mybatis/datasource/unpooled/UnpooledDataSource.java)实现了javax.sql.DataSource接口中定义的 getConnection()方法及其重载方法，用于获取数据库连接。
+[UnpooledDataSource](src/main/java/com/huangmaojie/read/mybatis/datasource/unpooled/UnpooledDataSource.java)实现了javax.sql.DataSource接口中定义的getConnection()方法及其重载方法，用于获取数据库连接。
 每次通过UnpooledDataSource.getConnection()方法获取数据库连接 时都会创建一个新连接。
 
 ### 2.6.4 PooledDataSource
@@ -213,6 +213,9 @@ Mybatis使用不同的DataSourceFactory接口实现创建不同类型的 DataSou
 [PooledDataSource](src/main/java/com/huangmaojie/read/mybatis/datasource/pooled/PooledDataSource.java)实现了简易数据库连接池的功能，它依赖的组件如图2-34所示，其中需要注意的是，PooledDataSource创建新数据库连接的功能是依赖其中封装的UnpooledDataSource对象实现的。
 
 ![img.png](src/main/resources/mybatis/img/2-34.png)
+
+PooledDataSource并不会直接管理java.sqI.Connection对象，而是管理[PooledConnection](src/main/java/com/huangmaojie/read/mybatis/datasource/pooled/PooledConnection.java)对象。在PooledConnection中封装了真正的数据库连接对象(java.sql.Connection)以及其代理对象，这里的代理对象是通过JDK 动态代理产生的。
+PooledConnection继承了InvocationHandler接口
 
 PooledDataSource.getConnection()方法首先会调用PooledDataSource.popConnection()方法获取PooledConnection对象，然后通过PooledConnection.getProxyConnection()方法获取数据库连接的代理对象。 
 popConnection()方法是PooledDataSource的核心逻辑之一，其具体逻辑如图2-35所示。
