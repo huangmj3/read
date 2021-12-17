@@ -46,6 +46,7 @@ public class UnpooledDataSource implements DataSource {
   private Integer defaultTransactionIsolationLevel;
 
   static {
+    // 向 OriverManager 注册 JOBC 驱动
     Enumeration<Driver> drivers = DriverManager.getDrivers();
     while (drivers.hasMoreElements()) {
       Driver driver = drivers.nextElement();
@@ -193,25 +194,33 @@ public class UnpooledDataSource implements DataSource {
   }
 
   private Connection doGetConnection(Properties properties) throws SQLException {
+    // 初始化数据库驱动
     initializeDriver();
+    //创建真正的数据库连接
     Connection connection = DriverManager.getConnection(url, properties);
+    //配置数据库连接的 autoCommit 和隔离级别
     configureConnection(connection);
     return connection;
   }
 
   private synchronized void initializeDriver() throws SQLException {
+    //检测驱动是否已注册
     if (!registeredDrivers.containsKey(driver)) {
       Class<?> driverType;
       try {
         if (driverClassLoader != null) {
+          //注册驱动
           driverType = Class.forName(driver, true, driverClassLoader);
         } else {
           driverType = Resources.classForName(driver);
         }
         // DriverManager requires the driver to be loaded via the system ClassLoader.
         // http://www.kfu.com/~nsayer/Java/dyn-jdbc.html
+        // 创建 Driver 对象
         Driver driverInstance = (Driver)driverType.newInstance();
+        //注册驱动， DriverProxy 是定义在 UnpooledDataSource 中的内部类，是 Driver 的静态代理类
         DriverManager.registerDriver(new DriverProxy(driverInstance));
+        //将驱动添加到 registeredDrivers 集合中
         registeredDrivers.put(driver, driverInstance);
       } catch (Exception e) {
         throw new SQLException("Error setting driver on UnpooledDataSource. Cause: " + e);
@@ -221,9 +230,11 @@ public class UnpooledDataSource implements DataSource {
 
   private void configureConnection(Connection conn) throws SQLException {
     if (autoCommit != null && autoCommit != conn.getAutoCommit()) {
+      //设置事务是否自动提交
       conn.setAutoCommit(autoCommit);
     }
     if (defaultTransactionIsolationLevel != null) {
+      //设置事务隔离级别
       conn.setTransactionIsolation(defaultTransactionIsolationLevel);
     }
   }
